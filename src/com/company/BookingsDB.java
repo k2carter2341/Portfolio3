@@ -11,7 +11,7 @@ public class BookingsDB {
     }
     public void open(){
         try {
-            String url = "jdbc:sqlite:listdb.db";
+            String url = "jdbc:sqlite:schoolbookings.db";
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             System.out.println("cannot open");
