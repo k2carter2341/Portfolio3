@@ -1,4 +1,16 @@
 package com.company;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import java.util.*;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class Main {
 
@@ -7,11 +19,9 @@ public class Main {
     }
 
     class Model {
-        MyDB db = new MyDB();   //add in external libraries
+        BookingsDB db = new BookingsDB();   //add in external libraries
 
         Model() {
-       /*
-
         db.cmd("drop table if exists lst1;");
         db.cmd("create table if not exists lst1 "+
                 "(fld1 integer primary key autoincrement, fld2 text);");
@@ -19,14 +29,14 @@ public class Main {
         db.cmd("drop table if exists Courses;");
         db.cmd("create table if not exists Courses "+
                 "(name text, stud integer);");
-        addCourses("Software Development","50");
-        addCourses("Essential Computing","90");
+//        addCourses("Software Development","50");
+//        addCourses("Essential Computing","90");
 
         db.cmd("drop table if exists Rooms;");
         db.cmd("create table if not exists Rooms "+
                 "(name text, stud integer);");
-        addRoom("10.2.49","60");
-        addRoom("10.1.25","30");
+//        addRoom("10.2.49","60");
+//        addRoom("10.1.25","30");
 
         db.cmd("drop table if exists Timeslot;");
         db.cmd("create table if not exists Timeslot "+
@@ -34,13 +44,13 @@ public class Main {
 //        for(int i=1;i<=10;i++)addTimeslot("Slot "+i);
         String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday"};
 //        for(int i=1;i<=10;i++)addTimeslot("Slot "+i);
-        for(String day:days){addTimeslot(day+" AM");addTimeslot(day+" PM");}
+       // for(String day:days){addTimeslot(day+" AM");addTimeslot(day+" PM");}
         db.cmd("drop table if exists Teacher;");
         db.cmd("create table if not exists Teacher "+
                 "(name text);");
-        addLecturer("Mads Rosendahl");
-        addLecturer("Mickey Mouse");
-        addLecturer("Spiderman");
+//        addLecturer("Mads Rosendahl");
+//        addLecturer("Mickey Mouse");
+//        addLecturer("Spiderman");
 
         db.cmd("drop table if exists Room Booking;");
         db.cmd("create table if not exists Room Booking "+
@@ -49,7 +59,7 @@ public class Main {
         db.cmd("drop table if exists Teacher Booking;");
         db.cmd("create table if not exists Teacher Booking "+
                 "(name text, Course ID, Time ID, Teacher ID);");
-         */
+
 
         }
     }
