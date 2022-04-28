@@ -2,6 +2,7 @@ package com.company;
 
 public class BookingsController {
 
+
         BookingsModel model;
         Main view;
         BookingsController(BookingsModel model, Main view){
@@ -22,12 +23,12 @@ public class BookingsController {
             view.setArea(toArea);
         }
         //adds a lecturer based on the input in the text box
-        void addLecturer(String input){
-            if(model.hasLecturer(input)){
+        void addTeacher(String input){
+            if(model.hasTeacher(input)){
                 view.setArea("Lecturer name already exists! " + input + " Cannot be added to the system.");
             } else {
-                model.addLecturer(input);
-                view.lecturer.getItems().add(input);
+                model.addTeacher(input);
+                view.teacher.getItems().add(input);
             }
         }
         //not exactly sure what this method does - is it for searching for a particular room? or for booking a room?

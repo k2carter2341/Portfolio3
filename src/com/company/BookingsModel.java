@@ -1,87 +1,110 @@
 package com.company;
 
+import javax.lang.model.element.Name;
 import java.util.ArrayList;
 
 public class BookingsModel {
     BookingsDB db = new BookingsDB();   //add in external libraries
 
+    //GET course capacity
 
     BookingsModel() {
 
-        db.cmdSQL("drop table if exists lst1;");
-        db.cmdSQL("create table if not exists lst1 "+
-                "(fld1 integer primary key autoincrement, fld2 text);");
+        //---Tables checks---
+        db.cmdSQL("DROP TABLE if exists Room;");
+        db.cmdSQL("DROP TABLE if exists TimeSlot;");
+        db.cmdSQL("DROP TABLE if exists Teacher;");
+        db.cmdSQL("DROP TABLE if exists Course;");
+        //db.cmdSQL("DROP TABLE if exists RoomBooking;");
+        //db.cmdSQL("DROP TABLE if exists TeacherBooking;");
 
-        db.cmdSQL("drop table if exists Courses;");
-        db.cmdSQL("create table if not exists Courses "+
-                "(name text, stud integer);");
-        addCourses("Software Development","50");
-        addCourses("Essential Computing","90");
 
-        db.cmdSQL("drop table if exists Rooms;");
-        db.cmdSQL("create table if not exists Rooms "+
-                "(name text, stud integer);");
-        addRoom("10.2.49","60");
-        addRoom("10.1.25","30");
+        //---Tables creations---
+        db.cmdSQL("CREATE TABLE if not exists Room" + "(RoomID string NOT NULL, MaxCapacity int NOT NULL, PRIMARY KEY (RoomID));");
+        db.cmdSQL(" CREATE TABLE if not exists TimeSlot "+ "(TimeSlotID string NOT NULL, PRIMARY KEY (TimeSlotID));");
+        db.cmdSQL("CREATE TABLE if not exists Teacher" + "(TeacherID int NOT NULL, Name string NOT NULL, PRIMARY KEY (TeacherID));");
+        db.cmdSQL("CREATE TABLE if not exists Course " + "(CourseID string NOT NULL, Capacity string NOT NULL, PRIMARY KEY (CourseID)); ");
+        //db.cmdSQL("CREATE TABLE if not exists RoomBooking "+ "(rbID, cID, tsID, rID);");
+        //db.cmdSQL("create table if not exists TeacherBooking "+ "(tbID, cID, tsID, tID);");
 
-        db.cmdSQL("drop table if exists Timeslot;");
-        db.cmdSQL("create table if not exists Timeslot "+
-                "(name text);");
-//        for(int i=1;i<=10;i++)addTimeslot("Slot "+i);
-        String[] days = {"Monday","Tuesday","Wednesday","Thursday","Friday"};
-//        for(int i=1;i<=10;i++)addTimeslot("Slot "+i);
-        for(String day:days){addTimeslot(day+" AM");addTimeslot(day+" PM");}
-        db.cmdSQL("drop table if exists Lecturer;");
-        db.cmdSQL("create table if not exists Lecturer "+
-                "(name text);");
-        addLecturer("Mads Rosendahl");
-        addLecturer("Mickey Mouse");
-        addLecturer("Spiderman");
 
-        db.cmdSQL("drop table if exists RoomBooking;");
-        db.cmdSQL("create table if not exists RoomBooking "+
-                "(name text, Course ID, Time ID, Room ID);");
+        //---Tables Insertions---
 
-        db.cmdSQL("drop table if exists TeacherBooking;");
-        db.cmdSQL("create table if not exists TeacherBooking "+
-                "(name text, Course ID, Time ID, Teacher ID);");
+        //Course
+        addCourse("Software Development","50");
+        addCourse("Essential Computing","90");
 
-        //PRAGMA foreign_keys = ON;
+        //TimeSlot
+        addTimeSlot("Monday AM");
+        addTimeSlot("Monday PM");
+        addTimeSlot("Tuesday AM");
+        addTimeSlot("Tuesday PM");
+        addTimeSlot("Wednesday AM");
+        addTimeSlot("Wednesday PM");
+        addTimeSlot("Thursday AM");
+        addTimeSlot("Thursday PM");
+        addTimeSlot("Friday AM");
+        addTimeSlot("Friday PM");
 
+        //Room
+        addRoom("Room1","60");
+        addRoom("Room2","30");
+
+        //Teacher
+        //addTeacher("792749", "Peter");
+        //addTeacher("671651", "Clarice");
+        //addTeacher("917358", "Ana");
+        //addTeacher("571234", "Emily");
+        //addTeacher("164796", "John");
+
+        //Room Booking
+        //addRoomBooking("rb 137", "History","Monday PM", "room 1");
+        //addRoomBooking("rb 146", "PE","Tuesday PM", "room 2");
+        //addRoomBooking("rb 177", "English","Monday AM", "room 3");
+
+        //Teacher Booking
+        //addTeacherBooking()
     }
 
-    void addLecturer(String s){  db.cmdSQL("insert into Lecturer (name) values ('"+s+"');");}
-    ArrayList<String> getLecturer(){return db.querySQL("select name from Lecturer;","name");}
+    //void addTeacher(String tID, String Name){  db.cmdSQL("insert into Teacher (TeacherID ,Name) values ('"+tID+"', "+Name+");");}
+//      ArrayList<String> getTeacher(){return db.querySQL("select Name from Teacher;","Name");}
+    void addTeacher(String s){
+        db.cmdSQL("insert into Teacher (TeacherID ,Name) values ('"+s+"');");
+    }
 
-    boolean hasLecturer(String s){
-        ArrayList<String> lst = db.querySQL("select name from Lecturer where name = '"+s+"';","name");
+    ArrayList<String> getTeacher(){
+        return db.querySQL("select name from Teacher;","name");
+    }
+
+    boolean hasTeacher(String s){
+        ArrayList<String> lst= db.querySQL("select name from Teacher where name = '"+s+"';","name");
         System.out.println(lst);
         return lst.size()>0;
-        //return getLecturer().contains(s);
+        //return getTeacher().contains(s);
     }
 
-    void addRoom(String s,String stud){db.cmdSQL("insert into Rooms (name,stud) values ('"+s+"',"+stud+");");}
-    ArrayList<String> getRoom(){return db.querySQL("select name from Rooms;","name");}
+    void addRoom(String rID,String maxcap){db.cmdSQL("insert into Room (RoomID, MaxCapacity) values ('"+rID+"',"+maxcap+");");}
+    ArrayList<String> getRoom(){return db.querySQL("select RoomID from Room;","RoomID");}
 
-    void addCourses(String s,String stud){ db.cmdSQL("insert into Courses (name,stud) values ('"+s+"',"+stud+");");}
-    ArrayList<String> getCourses(){
-        return db.querySQL("select name from Courses;","name");
+    void addCourse(String s,String Cap){ db.cmdSQL("insert into Course (CourseID,Capacity) values ('"+s+"',"+Cap+");");}
+    ArrayList<String> getCourse(){
+        return db.querySQL("select CourseID from Course;","CourseID");
     }
 
     String findRoom(String c){
         ArrayList<String> lst= db.querySQL(
-                "SELECT Rooms.name from Rooms inner join Courses"
-                        +" where Courses.name = '"+c+"' and Rooms.stud > Courses.stud;","name");
+                "select Room.name from Room inner join Course"
+                        +" where Course.name = '"+c+"' and Room.stud > Course.stud;","name");
         System.out.println(lst);
         if(lst.size()==0)return "";
         else return lst.get(0);
     }
 
-    void addTimeslot(String s){ // remember to sanitize your data!
-        db.cmdSQL("insert into Timeslot (name) values ('"+s+"');");
+    void addTimeSlot(String tsID){ // remember to sanitize your data!
+        db.cmdSQL("insert into TimeSlot (TimeSlotID) values ('"+tsID+"');");
     }
-    ArrayList<String> getTimeslot(){
-        return db.querySQL("select name from Timeslot;","name");
+    ArrayList<String> getTimeSlot(){
+        return db.querySQL("select TimeSlotID from TimeSlot;","TimeSlotID");
     }
 
     void add(String s){ // remember to sanitize your data!
@@ -90,5 +113,11 @@ public class BookingsModel {
     ArrayList<String> get(){
         return db.querySQL("select fld2 from lst1 order by fld1;","fld2");
     }
+
+    //void addRoomBooking(String rbID, String cID, String tsID, String rID){ db.cmdSQL("insert into RoomBooking (rbID, cID, tsID, rID) values ('"+rbID+"',"+cID+", "+tsID+", "+rID+",);");}
+    //ArrayList<String> getRoomBooking(){return db.querySQL("select name from RoomBooking;","name");}
+
+    //void addTeacherBooking(String tbID, String cID, String tsID, String tID){ db.cmdSQL("insert into RoomBooking (tbID, cID, tsID, tID) values ('"+tbID+"',"+cID+", "+tsID+", "+tID+",);");}
+    //ArrayList<String> getTeacherBooking(){return db.querySQL("select name from RoomBooking;","name");}
 }
 
