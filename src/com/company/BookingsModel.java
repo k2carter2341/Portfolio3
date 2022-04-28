@@ -2,6 +2,7 @@ package com.company;
 
 import javax.lang.model.element.Name;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class BookingsModel {
     BookingsDB db = new BookingsDB();   //add in external libraries
@@ -24,9 +25,10 @@ public class BookingsModel {
         db.cmdSQL(" CREATE TABLE if not exists TimeSlot "+ "(TimeSlotID string NOT NULL, PRIMARY KEY (TimeSlotID));");
         db.cmdSQL("CREATE TABLE if not exists Teacher" + "(TeacherID int NOT NULL, Name string NOT NULL, PRIMARY KEY (TeacherID));");
         db.cmdSQL("CREATE TABLE if not exists Course " + "(CourseID string NOT NULL, Capacity string NOT NULL, PRIMARY KEY (CourseID)); ");
-        //db.cmdSQL("CREATE TABLE if not exists RoomBooking "+ "(rbID, cID, tsID, rID);");
+        db.cmdSQL("CREATE TABLE if not exists RoomBooking " + "(RoomBookingID int NOT NULL, CourseID string NOT NULL, TimeSlotID string NOT NULL, RoomID string NOT NULL, PRIMARY KEY (RoomBookingID), FOREIGN KEY (CourseID) REFERENCES Course (CourseID), FOREIGN KEY (TimeSlotID) REFERENCES TimeSlot (TimeSlotID), FOREIGN KEY (RoomID) REFERENCES Room (RoomID) );");
         //db.cmdSQL("create table if not exists TeacherBooking "+ "(tbID, cID, tsID, tID);");
 
+        //db.cmdSQL("INSERT INTO RoomBooking (RoomBookingID, CourseID, TimeSlotID, RoomID) values ("+RoomBookingID+",'"+CourseID+"','"+TimeSlotID+"','"+RoomID+"');");
 
         //---Tables Insertions---
 
@@ -51,14 +53,14 @@ public class BookingsModel {
         addRoom("Room2","30");
 
         //Teacher
-        //addTeacher("792749", "Peter");
-        //addTeacher("671651", "Clarice");
-        //addTeacher("917358", "Ana");
-        //addTeacher("571234", "Emily");
-        //addTeacher("164796", "John");
+        addTeacher("Peter");
+        addTeacher("Clarice");
+        addTeacher("Ana");
+        addTeacher("Emily");
+        addTeacher("John");
 
         //Room Booking
-        //addRoomBooking("rb 137", "History","Monday PM", "room 1");
+        //addRoomBooking("Software Development","Monday PM", "Room1");
         //addRoomBooking("rb 146", "PE","Tuesday PM", "room 2");
         //addRoomBooking("rb 177", "English","Monday AM", "room 3");
 
@@ -68,20 +70,39 @@ public class BookingsModel {
 
     //void addTeacher(String tID, String Name){  db.cmdSQL("insert into Teacher (TeacherID ,Name) values ('"+tID+"', "+Name+");");}
 //      ArrayList<String> getTeacher(){return db.querySQL("select Name from Teacher;","Name");}
-    void addTeacher(String s){
-        db.cmdSQL("insert into Teacher (TeacherID ,Name) values ('"+s+"');");
+
+    void addTeacher(String teacherName){
+        Random rand = new Random();
+        int id = rand.nextInt(10000,99999);
+        db.cmdSQL("INSERT INTO Teacher (TeacherID, Name) VALUES ("+id+",'"+teacherName+"');");
     }
 
     ArrayList<String> getTeacher(){
-        return db.querySQL("select name from Teacher;","name");
+        return db.querySQL("SELECT TeacherID, Name FROM Teacher;","TeacherID");
     }
 
+    ArrayList<String> getTeacherToDisplay(){
+        ArrayList<String> teachersIDs;
+        ArrayList<String> teachersNames;
+        ArrayList<String> teachersIDsAndNames = new ArrayList<>();
+
+        teachersIDs = db.querySQL("SELECT TeacherID, Name FROM Teacher;","TeacherID");
+        teachersNames = db.querySQL("SELECT TeacherID, Name FROM Teacher;","Name");
+
+        for (int i = 0; i < teachersIDs.size(); i++) {
+            teachersIDsAndNames.add(teachersIDs.get(i) + " - " + teachersNames.get(i));
+        }
+        return teachersIDsAndNames;
+    }
+
+    /*
     boolean hasTeacher(String s){
         ArrayList<String> lst= db.querySQL("select name from Teacher where name = '"+s+"';","name");
         System.out.println(lst);
         return lst.size()>0;
         //return getTeacher().contains(s);
     }
+     */
 
     void addRoom(String rID,String maxcap){db.cmdSQL("insert into Room (RoomID, MaxCapacity) values ('"+rID+"',"+maxcap+");");}
     ArrayList<String> getRoom(){return db.querySQL("select RoomID from Room;","RoomID");}
@@ -114,7 +135,11 @@ public class BookingsModel {
         return db.querySQL("select fld2 from lst1 order by fld1;","fld2");
     }
 
-    //void addRoomBooking(String rbID, String cID, String tsID, String rID){ db.cmdSQL("insert into RoomBooking (rbID, cID, tsID, rID) values ('"+rbID+"',"+cID+", "+tsID+", "+rID+",);");}
+    void addRoomBooking(String CourseID, String TimeSlotID, String RoomID){
+        Random rand = new Random();
+        int RoomBookingID = rand.nextInt(100);
+        db.cmdSQL("INSERT INTO RoomBooking (RoomBookingID, CourseID, TimeSlotID, RoomID) values ("+RoomBookingID+",'"+CourseID+"','"+TimeSlotID+"','"+RoomID+"');");
+    }
     //ArrayList<String> getRoomBooking(){return db.querySQL("select name from RoomBooking;","name");}
 
     //void addTeacherBooking(String tbID, String cID, String tsID, String tID){ db.cmdSQL("insert into RoomBooking (tbID, cID, tsID, tID) values ('"+tbID+"',"+cID+", "+tsID+", "+tID+",);");}

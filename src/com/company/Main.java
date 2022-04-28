@@ -10,7 +10,7 @@ public class Main extends Application {
 
 
     //Old code
-
+    /*
     private BookingsModel model = new BookingsModel();
     private BookingsController controller = new BookingsController(model,this);
     private TextField field = new TextField();
@@ -23,11 +23,15 @@ public class Main extends Application {
     Button button2 = new Button("Find room");
     void setArea(String s){area.setText(s);}
     void clearField(){field.setText("");}
+     */
 
 
 
     //New code
-    /*
+
+    private BookingsModel model = new BookingsModel();
+    private BookingsController controller = new BookingsController(model,this);
+
     ComboBox<String> comboBoxCourses = new ComboBox<>();
     Label labelSelectCourse = new Label("Select course");
     RadioButton radioButtonInfoCourse = new RadioButton("Get info from course");
@@ -53,7 +57,10 @@ public class Main extends Application {
     Button buttonBookTeacher = new Button("Book teacher");
 
     ToggleGroup togleGroupRadioButtons;
-     */
+
+    void setTextAreaComboBoxInfo(String s){textAreaComboBoxInfo.setText(s);}
+    void clearTextFieldAddTeacher(){textFieldAddTeacher.setText("");}
+
 
 
 
@@ -61,14 +68,24 @@ public class Main extends Application {
     public void start(Stage stage) {
 
         //New Ui
-        /*
+
         //Pre configurations
+
+        controller.initArea();
+        textFieldAddTeacher.setOnAction(e->controller.enterText(textFieldAddTeacher.getText()));
+
+
         radioButtonInfoCourse.setToggleGroup(togleGroupRadioButtons);
         //radioButtonInfoTeacher.setToggleGroup(togleGroupRadioButtons);
         //radioButtonInfoRoom.setToggleGroup(togleGroupRadioButtons);
 
         textAreaComboBoxInfo.setEditable(false);
 
+        comboBoxTeachers.getItems().addAll(model.getTeacherToDisplay());
+        comboBoxCourses.getItems().addAll(model.getCourse());
+        comboBoxRooms.getItems().addAll(model.getRoom());
+        comboBoxTimeSlots.getItems().addAll(model.getTimeSlot());
+        buttonAddTeacher.setOnAction(e->controller.addTeacher(textFieldAddTeacher.getText()));
 
         //Adding UI elements to VBox
         VBox root = new VBox(labelSelectCourse, comboBoxCourses, radioButtonInfoCourse,
@@ -84,13 +101,13 @@ public class Main extends Application {
         stage.setTitle("Booking System");
         stage.setScene(scene);
         stage.show();
-         */
 
+        /*
         //Old UI
         controller.initArea();
         field.setOnAction(e->controller.enterText(field.getText()));
         VBox root = new VBox(courses,teacher,rooms,timeslot,field,button,button2,area);
-        teacher.getItems().addAll(model.getTeacher());
+        teacher.getItems().addAll(model.getTeacherToDisplay());
         courses.getItems().addAll(model.getCourse());
         rooms.getItems().addAll(model.getRoom());
         timeslot.getItems().addAll(model.getTimeSlot());
@@ -100,6 +117,7 @@ public class Main extends Application {
         stage.setTitle("JavaFX Demo");
         stage.setScene(scene);
         stage.show();
+         */
 
     }
     //launch: create obj from class, create stage obj, call start
