@@ -23,21 +23,23 @@ public class BookingsController {
             view.setTextAreaComboBoxInfo(toArea);
         }
         //adds a lecturer based on the input in the text box
-        void addTeacher(String input){
+        void addTeacher(String teacherName){
             /*
             if(model.hasTeacher(input)){
                 view.setArea("Teacher name already exists! " + input + " Cannot be added to the system.");
             } else {
              */
-                model.addTeacher(input);
-                view.comboBoxTeachers.getItems().add(input);
+                int teacherID = model.addTeacher(teacherName);
+                String teacherIDAndName = teacherID + " - " + teacherName;
+                view.comboBoxTeachers.getItems().add(teacherIDAndName);
             //}
         }
         //not exactly sure what this method does - is it for searching for a particular room? or for booking a room?
+    /*
         void findRoom(String input){
             String room = model.findRoom(input);
             if(room.equals("")) view.setTextAreaComboBoxInfo("No Room");
             else view.setTextAreaComboBoxInfo("Room: " + room);
         }
-
+    */
 }

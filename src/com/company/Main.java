@@ -5,9 +5,11 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.util.Scanner;
+
 public class Main extends Application {
 
-
+    static String reset;
 
     //Old code
     /*
@@ -74,7 +76,6 @@ public class Main extends Application {
         controller.initArea();
         textFieldAddTeacher.setOnAction(e->controller.enterText(textFieldAddTeacher.getText()));
 
-
         radioButtonInfoCourse.setToggleGroup(togleGroupRadioButtons);
         //radioButtonInfoTeacher.setToggleGroup(togleGroupRadioButtons);
         //radioButtonInfoRoom.setToggleGroup(togleGroupRadioButtons);
@@ -122,6 +123,9 @@ public class Main extends Application {
     }
     //launch: create obj from class, create stage obj, call start
     public static void main(String[] args) {
+        System.out.print("Would you like to reset the database? ('y' = Yes | 'n' = No): ");
+        Scanner scanner = new Scanner(System.in);
+        reset = scanner.nextLine();
         launch(args);
     }
 }
