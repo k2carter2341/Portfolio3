@@ -1,5 +1,7 @@
 package com.company;
 
+import javax.lang.model.element.Name;
+
 public class BookingsController {
 
         BookingsModel model;
