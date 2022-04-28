@@ -5,63 +5,63 @@ import java.util.ArrayList;
 
 public class BookingsDB {
 
-    Connection conn = null;
+    Connection connection = null;
     BookingsDB(){
-        if(conn==null)open();
+        if(connection == null)open();
     }
     public void open(){
         try {
-            String url = "jdbc:sqlite:schoolbookings.db";
-            conn = DriverManager.getConnection(url);
+            String URL = "jdbc:sqlite:schoolbookings.db";
+            connection = DriverManager.getConnection(URL);
         } catch (SQLException e) {
             System.out.println("cannot open");
-            if (conn != null) close();
+            if (connection != null) close();
         };
     }
     public void close(){
         try {
-            if (conn != null) conn.close();
+            if (connection != null) connection.close();
         } catch (SQLException e ) {
             System.out.println("cannot close");
         }
-        conn=null;
+        connection = null;
     }
-    public void cmd(String sql){
-        if(conn==null)open();
-        if(conn==null){System.out.println("No connection");return;}
-        Statement stmt=null;
+    public void cmdSQL (String stmt){
+        if(connection == null) open();
+        if(connection == null) {System.out.println("No connection"); return;}
+        Statement stmtSQL = null;
         try {
-            stmt = conn.createStatement();
-            stmt.executeUpdate(sql);
+            stmtSQL = connection.createStatement();
+            stmtSQL.executeUpdate(stmt);
         } catch (SQLException e ) {
-            System.out.println("Error in statement "+sql);
+            System.out.println("Error in statement " + stmt);
         }
         try {
-            if (stmt != null) { stmt.close(); }
+            if (stmtSQL != null) { stmtSQL.close(); }
         } catch (SQLException e ) {
-            System.out.println("Error in statement "+sql);
+            System.out.println("Error in statement "+ stmt);
         }
     }
-    public ArrayList<String> query(String query, String fld){
-        ArrayList<String> res=new ArrayList<>();
-        if(conn==null)open();
-        if(conn==null){System.out.println("No connection");return res;}
-        Statement stmt=null;
+    public ArrayList<String> querySQL (String query, String field){
+        ArrayList<String> results = new ArrayList<>();
+        if(connection ==null) open();
+        if(connection ==null) {System.out.println("No connection"); return results;}
+        Statement stmtSQL = null;
         try {
-            stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
-            while (rs.next()) {
-                String name = rs.getString(fld);
-                res.add(name);
+            stmtSQL = connection.createStatement();
+            ResultSet resultSet = stmtSQL.executeQuery(query);
+            while (resultSet.next()) {
+                String name = resultSet.getString(field);
+                results.add(name); //change "name" to "resultField" ???? or something more logical
             }
         } catch (SQLException e ) {
-            System.out.println("Error in statement "+query+" "+fld);
+            System.out.println("Error in statement " + query + " " + field);
         }
         try {
-            if (stmt != null) { stmt.close(); }
+            if (stmtSQL != null) { stmtSQL.close(); }
         } catch (SQLException e ) {
-            System.out.println("Error in statement "+query+" "+fld);
+            System.out.println("Error in statement "+ query + " " + field);
         }
-        return res;
+        return results;
     }
 }
