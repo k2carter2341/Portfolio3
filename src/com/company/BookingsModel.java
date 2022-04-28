@@ -34,11 +34,11 @@ public class BookingsModel {
             //---Tables Insertions---
 
             //Course
-            addCourse("Software Development", "50");
-            addCourse("Essential Computing", "90");
-            addCourse("Computer Science Project", "120");
-            addCourse("BigData Knowledge", "40");
-            addCourse("UI Design", "55");
+            addCourse("Software Development", 50);
+            addCourse("Essential Computing", 90);
+            addCourse("Computer Science Project", 120);
+            addCourse("BigData Knowledge", 40);
+            addCourse("UI Design", 55);
 
             //TimeSlot
             addTimeSlot("Monday AM");
@@ -53,11 +53,11 @@ public class BookingsModel {
             addTimeSlot("Friday PM");
 
             //Room
-            addRoom("Room1", "60");
-            addRoom("Room2", "30");
-            addRoom("Room3", "50");
-            addRoom("Room4", "40");
-            addRoom("Room5", "70");
+            addRoom("Room1", 60);
+            addRoom("Room2", 30);
+            addRoom("Room3", 50);
+            addRoom("Room4", 40);
+            addRoom("Room5", 70);
 
             //Teacher
             addDefaultTeacher(49123, "Peter");
@@ -85,10 +85,15 @@ public class BookingsModel {
     }
 
     int addTeacher(String TeacherName){
-        Random rand = new Random();
-        int TeacherID = rand.nextInt(10000,99999);
-        db.cmdSQL("INSERT INTO Teacher (TeacherID, Name) VALUES ("+TeacherID+",'"+TeacherName+"');");
-        return TeacherID;
+        if (TeacherName != "") {
+            Random rand = new Random();
+            int TeacherID = rand.nextInt(10000,99999);
+            db.cmdSQL("INSERT INTO Teacher (TeacherID, Name) VALUES ("+TeacherID+",'"+TeacherName+"');");
+            return TeacherID;
+        }
+        else {
+            return -1;
+        }
     }
 
     ArrayList<String> getTeacher(){
@@ -122,8 +127,8 @@ public class BookingsModel {
 
     //---Room functions---
 
-    void addRoom(String rID,String maxcap){
-        db.cmdSQL("INSERT INTO Room (RoomID, MaxCapacity) VALUES ('"+rID+"',"+maxcap+");");
+    void addRoom(String RoomID, int MaxCapacity){
+        db.cmdSQL("INSERT INTO Room (RoomID, MaxCapacity) VALUES ('"+RoomID+"',"+MaxCapacity+");");
     }
 
     ArrayList<String> getRoom(){
@@ -145,19 +150,23 @@ public class BookingsModel {
 
     //---Course functions---
 
-    void addCourse(String s,String Cap){
-        db.cmdSQL("INSERT INTO Course (CourseID,Capacity) VALUES ('"+s+"',"+Cap+");");
+    void addCourse(String CourseID, int MaxCapacity) {
+        db.cmdSQL("INSERT INTO Course (CourseID,Capacity) VALUES ('"+CourseID+"',"+MaxCapacity+");");
     }
 
-    ArrayList<String> getCourse(){
+    ArrayList<String> getCourse() {
         return db.querySQL("SELECT CourseID FROM Course;","CourseID");
+    }
+
+    ArrayList<String> getInfoFromCourse(String CourseID) {
+        return db.querySQL("SELECT Capacity FROM Course WHERE Course.CourseID = '"+CourseID+"';", "Capacity");
     }
 
 
     //---Time Slot functions---
 
-    void addTimeSlot(String tsID) {
-        db.cmdSQL("INSERT INTO TimeSlot (TimeSlotID) VALUES ('"+tsID+"');");
+    void addTimeSlot(String TimeSlotID) {
+        db.cmdSQL("INSERT INTO TimeSlot (TimeSlotID) VALUES ('"+TimeSlotID+"');");
     }
 
     ArrayList<String> getTimeSlot(){
@@ -167,10 +176,15 @@ public class BookingsModel {
 
     //---Room Booking functions---
 
-    void addRoomBooking(String CourseID, String TimeSlotID, String RoomID){
+    int addRoomBooking(String CourseID, String TimeSlotID, String RoomID){
+
+        //ArrayList<String> RoomsBooked;
+        //db.querySQL("SELECT TimeSlotID FROM TimeSlot;","TimeSlotID");
+
         Random rand = new Random();
         int RoomBookingID = rand.nextInt(100);
         db.cmdSQL("INSERT INTO RoomBooking (RoomBookingID, CourseID, TimeSlotID, RoomID) VALUES ("+RoomBookingID+",'"+CourseID+"','"+TimeSlotID+"','"+RoomID+"');");
+        return RoomBookingID;
     }
 
     //ArrayList<String> getRoomBooking(){
@@ -194,6 +208,7 @@ public class BookingsModel {
 
 
     //---Common functions----
+    //Don't know exactly what are they supposed to (?)
 
     void add(String s){
         db.cmdSQL("INSERT INTO lst1 (fld2) VALUES ('"+s+"');");

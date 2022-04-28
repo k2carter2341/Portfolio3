@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.ArrayList;
+
 public class BookingsController {
 
 
@@ -23,17 +25,32 @@ public class BookingsController {
             view.setTextAreaComboBoxInfo(toArea);
         }
         //adds a lecturer based on the input in the text box
-        void addTeacher(String teacherName){
+        void addTeacher(String teacherName) {
             /*
             if(model.hasTeacher(input)){
                 view.setArea("Teacher name already exists! " + input + " Cannot be added to the system.");
             } else {
              */
                 int teacherID = model.addTeacher(teacherName);
-                String teacherIDAndName = teacherID + " - " + teacherName;
-                view.comboBoxTeachers.getItems().add(teacherIDAndName);
+                //Success check
+                if (teacherID != -1) {
+                    String teacherIDAndName = teacherID + " - " + teacherName;
+                    view.comboBoxTeachers.getItems().add(teacherIDAndName);
+                }
             //}
         }
+
+        void getInfoFromCourse(String courseID) {
+            if (view.radioButtonInfoCourse.isSelected()) {
+                ArrayList<String> result = model.getInfoFromCourse(courseID);
+                String textInfo = "Maximum number of students is " + result.get(0);
+                view.setTextAreaComboBoxInfo(textInfo);
+            }
+            else {
+                view.clearTextAreaComboBoxInfo();
+            }
+        }
+
         //not exactly sure what this method does - is it for searching for a particular room? or for booking a room?
     /*
         void findRoom(String input){

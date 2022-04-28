@@ -1,10 +1,11 @@
 package com.company;
 import javafx.application.Application;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-
+import javafx.beans.value.ChangeListener;
 import java.util.Scanner;
 
 public class Main extends Application {
@@ -54,13 +55,16 @@ public class Main extends Application {
     //RadioButton radioButtonInfoRoom = new RadioButton("Get info from room");
     //RadioButton radioButtonInfoTimeSlot = new RadioButton("Get info from time slot");
 
+    Label labelComboBoxInfo = new Label("Course info");
     TextArea textAreaComboBoxInfo = new TextArea();
+
     Button buttonBookRoom = new Button("Book room");
     Button buttonBookTeacher = new Button("Book teacher");
 
     ToggleGroup togleGroupRadioButtons;
 
     void setTextAreaComboBoxInfo(String s){textAreaComboBoxInfo.setText(s);}
+    void clearTextAreaComboBoxInfo(){textAreaComboBoxInfo.setText("");}
     void clearTextFieldAddTeacher(){textFieldAddTeacher.setText("");}
 
 
@@ -77,6 +81,7 @@ public class Main extends Application {
         textFieldAddTeacher.setOnAction(e->controller.enterText(textFieldAddTeacher.getText()));
 
         radioButtonInfoCourse.setToggleGroup(togleGroupRadioButtons);
+        radioButtonInfoCourse.setOnAction(e->controller.getInfoFromCourse(comboBoxCourses.getValue()));
         //radioButtonInfoTeacher.setToggleGroup(togleGroupRadioButtons);
         //radioButtonInfoRoom.setToggleGroup(togleGroupRadioButtons);
 
@@ -88,12 +93,21 @@ public class Main extends Application {
         comboBoxTimeSlots.getItems().addAll(model.getTimeSlot());
         buttonAddTeacher.setOnAction(e->controller.addTeacher(textFieldAddTeacher.getText()));
 
+        comboBoxCourses.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue ov, String t, String t1) {
+                controller.getInfoFromCourse(comboBoxCourses.getValue());
+            }
+        });
+
+
         //Adding UI elements to VBox
         VBox root = new VBox(labelSelectCourse, comboBoxCourses, radioButtonInfoCourse,
                 labelSelectRoom, comboBoxRooms,
                 labelSelectTimeSlot, comboBoxTimeSlots,
                 labelSelectTeacher, comboBoxTeachers,
-                textFieldAddTeacher, buttonAddTeacher, textAreaComboBoxInfo,
+                textFieldAddTeacher, buttonAddTeacher,
+                labelComboBoxInfo,textAreaComboBoxInfo,
                 buttonBookRoom, buttonBookTeacher);
 
 
