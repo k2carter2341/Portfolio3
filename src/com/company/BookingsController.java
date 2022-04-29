@@ -52,21 +52,31 @@ public class BookingsController {
     }
 
     void addRoomBooking(String CourseID, String TimeSlotID, String RoomID) {
-        if (model.hasRoomBooking(TimeSlotID, RoomID)){
-            view.setTextAreaInfo("Room booking already exists! Please try again.");
-        } else {
-            int RoomBookingID = model.addRoomBooking(CourseID, TimeSlotID, RoomID);
-            view.setTextAreaInfo("Room is booked! The Room Booking ID is " + RoomBookingID + ".");
+        if (CourseID == null || TimeSlotID == null || RoomID == null) {
+            view.setTextAreaInfo("Please select a course, time slot and a room.");
+        }
+        else{
+            if (model.hasRoomBooking(TimeSlotID, RoomID)){
+                view.setTextAreaInfo("Room booking already exists! Please try again.");
+            } else {
+                int RoomBookingID = model.addRoomBooking(CourseID, TimeSlotID, RoomID);
+                view.setTextAreaInfo("Room is booked! The Room Booking ID is " + RoomBookingID + ".");
+            }
         }
     }
 
     void addTeacherBooking(String CourseID, String TimeSlotID, String TeacherIDAndName) {
-        int TeacherID = Integer.parseInt(TeacherIDAndName.substring(0,5));
-        if (model.hasTeacherBooking(TimeSlotID, TeacherID)) {
-            view.setTextAreaInfo("Teacher booking already exists! Please try again.");
-        } else {
-            int TeacherBookingID = model.addTeacherBooking(CourseID, TimeSlotID, TeacherID);
-            view.setTextAreaInfo("Teacher is booked! The Teacher booking ID is " + TeacherBookingID + ".");
+        if (CourseID == null || TimeSlotID == null || TeacherIDAndName == null) {
+            view.setTextAreaInfo("Please select a course, time slot and a teacher.");
+        }
+        else {
+            int TeacherID = Integer.parseInt(TeacherIDAndName.substring(0,5));
+            if (model.hasTeacherBooking(TimeSlotID, TeacherID)) {
+                view.setTextAreaInfo("Teacher booking already exists! Please try again.");
+            } else {
+                int TeacherBookingID = model.addTeacherBooking(CourseID, TimeSlotID, TeacherID);
+                view.setTextAreaInfo("Teacher is booked! The Teacher booking ID is " + TeacherBookingID + ".");
+            }
         }
     }
 }
