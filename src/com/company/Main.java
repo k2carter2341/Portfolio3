@@ -12,26 +12,6 @@ public class Main extends Application {
 
     static String reset;
 
-    //Old code
-    /*
-    private BookingsModel model = new BookingsModel();
-    private BookingsController controller = new BookingsController(model,this);
-    private TextField field = new TextField();
-    private TextArea area = new TextArea();
-    ComboBox<String> teacher = new ComboBox<>();
-    ComboBox<String> courses = new ComboBox<>();
-    ComboBox<String> rooms = new ComboBox<>();
-    ComboBox<String> timeslot = new ComboBox<>();
-    Button button = new Button("Add lecturer");
-    Button button2 = new Button("Find room");
-    void setArea(String s){area.setText(s);}
-    void clearField(){field.setText("");}
-     */
-
-
-
-    //New code
-
     private BookingsModel model = new BookingsModel();
     private BookingsController controller = new BookingsController(model,this);
 
@@ -122,23 +102,6 @@ public class Main extends Application {
         stage.setTitle("Booking System");
         stage.setScene(scene);
         stage.show();
-
-        /*
-        //Old UI
-        controller.initArea();
-        field.setOnAction(e->controller.enterText(field.getText()));
-        VBox root = new VBox(courses,teacher,rooms,timeslot,field,button,button2,area);
-        teacher.getItems().addAll(model.getTeacherToDisplay());
-        courses.getItems().addAll(model.getCourse());
-        rooms.getItems().addAll(model.getRoom());
-        timeslot.getItems().addAll(model.getTimeSlot());
-        button.setOnAction(e->controller.addTeacher(field.getText()));
-        button2.setOnAction(e->controller.findRoom(courses.getValue()));
-        Scene scene = new Scene(root, 500, 500);
-        stage.setTitle("JavaFX Demo");
-        stage.setScene(scene);
-        stage.show();
-         */
 
     }
     //launch: create obj from class, create stage obj, call start
