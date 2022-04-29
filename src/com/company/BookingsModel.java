@@ -72,8 +72,8 @@ public class BookingsModel {
 //            addRoomBooking("BigData Knowledge","Thursday AM", "Room3");
 
             //Teacher Booking
-            addTeacherBooking("Computer Science Project", "Wednesday PM", 84202);
-            addTeacherBooking("Ui Design", "Monday AM", 59395);
+//            addTeacherBooking("Computer Science Project", "Wednesday PM", 84202);
+//            addTeacherBooking("Ui Design", "Monday AM", 59395);
         }
     }
 
@@ -148,23 +148,10 @@ public class BookingsModel {
         return db.querySQL("SELECT TimeSlotID FROM TimeSlot;","TimeSlotID");
     }
 
+    boolean hasRoomBooking(String TimeSlotID, String RoomID) {
+        ArrayList<String> results = db.querySQL("SELECT RoomID FROM RoomBooking WHERE TimeSlotID = '"+TimeSlotID+"' AND RoomID = '"+RoomID+"';","RoomID");
+        return results.size()>0;
 
-    //---Room Booking functions---
-    //*****For this to work there needs to be an AND in between the parameters somehow*****
-    boolean hasRoomBooking(String CourseID, String TimeSlotID, String RoomID) {
-//        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM RoomBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
-//        ArrayList<String> results2 = db.querySQL("SELECT RoomID FROM RoomBooking Where RoomID = '"+RoomID+"';","RoomID");
-//        ArrayList<String> results3 = db.querySQL("SELECT CourseID FROM RoomBooking Where CourseID = '"+CourseID+"';","CourseID");
-        // even with the same time slot you can book courses and rooms
-        ArrayList<String> results4 = db.querySQL("SELECT TimeSlotID, CourseID, RoomID FROM RoomBooking Where TimeSlotID = '"+TimeSlotID+"',  CourseID = '"+CourseID+"', RoomID = '"+RoomID+"';","TimeSlotID");
-        return results4.size()>0;
-        //System.out.println(results);
-//        ArrayList<String> combinedResults = new ArrayList<String>();
-//        combinedResults.addAll(results1);
-//        combinedResults.addAll(results2);
-//        combinedResults.addAll(results3);
-//        return combinedResults.size()>0;
-        //return getTeacher().contains(s);
     }
     int addRoomBooking(String CourseID, String TimeSlotID, String RoomID){
         Random rand = new Random();
@@ -173,17 +160,6 @@ public class BookingsModel {
         return RoomBookingID;
     }
 
-
-    /*
-    boolean hasTeacher(String s){
-        ArrayList<String> lst= db.querySQL("select name from Teacher where name = '"+s+"';","name");
-        System.out.println(lst);
-        return lst.size()>0;
-        //return getTeacher().contains(s);
-    }
-     */
-
-
     //ArrayList<String> getRoomBooking(){
     //  return db.querySQL("select name from RoomBooking;","name");
     //}
@@ -191,15 +167,10 @@ public class BookingsModel {
 
     //---Teacher Booking functions---
 
-    //*****For this to work there needs to be an AND in between these parameters*****
-//    boolean hasTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
-//        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM TeacherBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
-//        ArrayList<String> results2 = db.querySQL("SELECT CourseID FROM TeacherBooking Where CourseID = '"+CourseID+"';","CourseID");
-//        ArrayList<String> results3 = db.querySQL("SELECT TeacherID FROM TeacherBooking Where TeacherID = "+TeacherID+";","TeacherID");
-//
-//        return results1.size()>0;
-//        //return results2.size()>0;
-//        //return results3.size()>0;
+    boolean hasTeacherBooking(String TimeSlotID, int TeacherID){
+        ArrayList<String> results= db.querySQL("SELECT TeacherID FROM TeacherBooking WHERE TimeSlotID = '"+TimeSlotID+"' AND TeacherID = "+TeacherID+";","TeacherID");
+        return results.size()>0;
+    }
 
    // }
     int addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
@@ -212,6 +183,7 @@ public class BookingsModel {
     //ArrayList<String> getTeacherBooking(){
     //  return db.querySQL("select name from RoomBooking;","name");
     //}
+
 
     //---Common functions----
     //Don't know exactly what are they supposed to (?)

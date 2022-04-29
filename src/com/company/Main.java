@@ -57,16 +57,16 @@ public class Main extends Application {
     //RadioButton radioButtonInfoRoom = new RadioButton("Get info from room");
     //RadioButton radioButtonInfoTimeSlot = new RadioButton("Get info from time slot");
 
-    Label labelComboBoxInfo = new Label("Course info");
-    TextArea textAreaComboBoxInfo = new TextArea();
+    Label labelInfo = new Label("Info");
+    TextArea textAreaInfo = new TextArea();
 
     Button buttonBookRoom = new Button("Book room");
     Button buttonBookTeacher = new Button("Book teacher");
 
     ToggleGroup togleGroupRadioButtons;
 
-    void setTextAreaComboBoxInfo(String s){textAreaComboBoxInfo.setText(s);}
-    void clearTextAreaComboBoxInfo(){textAreaComboBoxInfo.setText("");}
+    void setTextAreaInfo(String s){textAreaInfo.setText(s);}
+    void cleartextAreaInfo(){textAreaInfo.setText("");}
     void clearTextFieldAddTeacher(){textFieldAddTeacher.setText("");}
 
     @Override
@@ -81,10 +81,11 @@ public class Main extends Application {
 
         radioButtonInfoCourse.setToggleGroup(togleGroupRadioButtons);
         radioButtonInfoCourse.setOnAction(e->controller.getInfoFromCourse(comboBoxCourses.getValue()));
+        radioButtonInfoCourse.setDisable(true);
         //radioButtonInfoTeacher.setToggleGroup(togleGroupRadioButtons);
         //radioButtonInfoRoom.setToggleGroup(togleGroupRadioButtons);
 
-        textAreaComboBoxInfo.setEditable(false);
+        textAreaInfo.setEditable(false);
 
         comboBoxTeachers.getItems().addAll(model.getTeacherToDisplay());
         comboBoxCourses.getItems().addAll(model.getCourse());
@@ -96,11 +97,15 @@ public class Main extends Application {
             @Override
             public void changed(ObservableValue ov, String t, String t1) {
                 controller.getInfoFromCourse(comboBoxCourses.getValue());
+                radioButtonInfoCourse.setDisable(false);
             }
         });
 
+        //buttonBookRoom.setOnAction(e->radioButtonInfoCourse.setSelected(false));
         buttonBookRoom.setOnAction(e->controller.addRoomBooking(comboBoxCourses.getValue(), comboBoxTimeSlots.getValue(), comboBoxRooms.getValue()));
-        buttonBookTeacher.setOnAction(e->controller.addTeacherBooking(comboBoxCourses.getValue(), comboBoxTimeSlots.getValue(), Integer.parseInt(comboBoxTeachers.getValue())));
+
+        //buttonBookTeacher.setOnAction(e->radioButtonInfoCourse.setSelected(false));
+        buttonBookTeacher.setOnAction(e->controller.addTeacherBooking(comboBoxCourses.getValue(), comboBoxTimeSlots.getValue(), comboBoxTeachers.getValue()));
 
         //Adding UI elements to VBox
         VBox root = new VBox(labelSelectCourse, comboBoxCourses, radioButtonInfoCourse,
@@ -108,7 +113,7 @@ public class Main extends Application {
                 labelSelectTimeSlot, comboBoxTimeSlots,
                 labelSelectTeacher, comboBoxTeachers,
                 textFieldAddTeacher, buttonAddTeacher,
-                labelComboBoxInfo,textAreaComboBoxInfo,
+                labelInfo,textAreaInfo,
                 buttonBookRoom, buttonBookTeacher);
 
 
