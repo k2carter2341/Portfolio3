@@ -69,9 +69,6 @@ public class Main extends Application {
     void clearTextAreaComboBoxInfo(){textAreaComboBoxInfo.setText("");}
     void clearTextFieldAddTeacher(){textFieldAddTeacher.setText("");}
 
-
-
-
     @Override
     public void start(Stage stage) {
 
@@ -102,6 +99,8 @@ public class Main extends Application {
             }
         });
 
+        buttonBookRoom.setOnAction(e->controller.addRoomBooking(comboBoxCourses.getValue(), comboBoxTimeSlots.getValue(), comboBoxRooms.getValue()));
+        buttonBookTeacher.setOnAction(e->controller.addTeacherBooking(comboBoxCourses.getValue(), comboBoxTimeSlots.getValue(), comboBoxTeachers.getValue()));
 
         //Adding UI elements to VBox
         VBox root = new VBox(labelSelectCourse, comboBoxCourses, radioButtonInfoCourse,

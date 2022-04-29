@@ -25,21 +25,7 @@ public class BookingsController {
             for(String t : model.get()) toArea += t + "\n";
             view.setTextAreaComboBoxInfo(toArea);
         }
-        //adds a lecturer based on the input in the text box
-        void addTeacher(String teacherName) {
-            /*
-            if(model.hasTeacher(input)){
-                view.setArea("Teacher name already exists! " + input + " Cannot be added to the system.");
-            } else {
-             */
-                int teacherID = model.addTeacher(teacherName);
-                //Success check
-                if (teacherID != -1) {
-                    String teacherIDAndName = teacherID + " - " + teacherName;
-                    view.comboBoxTeachers.getItems().add(teacherIDAndName);
-                }
-            //}
-        }
+
         //Retrieves information from Course Table
         void getInfoFromCourse(String courseID) {
             if (view.radioButtonInfoCourse.isSelected()) {
@@ -52,12 +38,32 @@ public class BookingsController {
             }
         }
 
-        //not exactly sure what this method does - is it for searching for a particular room? or for booking a room?
-    /*
-        void findRoom(String input){
-            String room = model.findRoom(input);
-            if(room.equals("")) view.setTextAreaComboBoxInfo("No Room");
-            else view.setTextAreaComboBoxInfo("Room: " + room);
+        //adds a lecturer based on the input in the text box
+        void addTeacher(String teacherName) {
+            int teacherID = model.addTeacher(teacherName);
+            //Success check
+            if (teacherID != -1) {
+                String teacherIDAndName = teacherID + " - " + teacherName;
+                view.comboBoxTeachers.getItems().add(teacherIDAndName);
+            }
         }
-    */
+
+        void addRoomBooking(String CourseID, String TimeSlotID, String RoomID) {
+                if(model.hasRoomBooking(CourseID, TimeSlotID, RoomID)){
+                    view.setTextAreaComboBoxInfo("Room booking already exists! Please try again.");
+                } else {
+                    int roomBookingID = model.addRoomBooking(CourseID, TimeSlotID, RoomID);
+                    view.setTextAreaComboBoxInfo("Room is booked! The Room Booking ID is " + roomBookingID + ".");
+                }
+        }
+
+        void addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
+            if(model.hasTeacherBooking(CourseID, TimeSlotID, TeacherID)){
+                view.setTextAreaComboBoxInfo("Room Booking already exists! Please try again.");
+            } else {
+                int teacherBookingID = model.addTeacherBooking(CourseID, TimeSlotID, TeacherID);
+                view.setTextAreaComboBoxInfo("Room is booked! The Room Booking ID is " + teacherBookingID + ".");
+            }
+        }
+
 }

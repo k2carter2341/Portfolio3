@@ -68,9 +68,9 @@ public class BookingsModel {
             addDefaultTeacher(59395, "John");
 
             //Room Booking
-            addRoomBooking("Software Development","Monday PM", "Room1");
-            addRoomBooking("Essential Computing","Tuesday PM", "Room2");
-            addRoomBooking("BigData Knowledge","Thursday AM", "Room3");
+//            addRoomBooking("Software Development","Monday PM", "Room1");
+//            addRoomBooking("Essential Computing","Tuesday PM", "Room2");
+//            addRoomBooking("BigData Knowledge","Thursday AM", "Room3");
 
             //Teacher Booking
             addTeacherBooking("Computer Science Project", "Wednesday PM", 84202);
@@ -115,17 +115,6 @@ public class BookingsModel {
         return teachersIDsAndNames;
     }
 
-    // IN DOUBT IF WE NEED TO USE
-    /*
-    boolean hasTeacher(String s){
-        ArrayList<String> lst= db.querySQL("select name from Teacher where name = '"+s+"';","name");
-        System.out.println(lst);
-        return lst.size()>0;
-        //return getTeacher().contains(s);
-    }
-     */
-
-
     //---Room functions---
 
     void addRoom(String RoomID, int MaxCapacity){
@@ -135,19 +124,6 @@ public class BookingsModel {
     ArrayList<String> getRoom(){
         return db.querySQL("SELECT RoomID FROM Room;","RoomID");
     }
-
-    //NOT BEING USED
-    /*
-    String findRoom(String c){
-        ArrayList<String> lst= db.querySQL(
-                "SELECT Room.Name FROM Room INNER JOIN Course"
-                        +" WHERE Course.Name = '"+c+"' and Room.Stud > Course.Stud;","name");
-        System.out.println(lst);
-        if(lst.size()==0)return "";
-        else return lst.get(0);
-    }
-     */
-
 
     //---Course functions---
 
@@ -163,7 +139,6 @@ public class BookingsModel {
         return db.querySQL("SELECT Capacity FROM Course WHERE Course.CourseID = '"+CourseID+"';", "Capacity");
     }
 
-
     //---Time Slot functions---
 
     void addTimeSlot(String TimeSlotID) {
@@ -176,27 +151,47 @@ public class BookingsModel {
 
 
     //---Room Booking functions---
-
+    boolean hasRoomBooking(String CourseID, String TimeSlotID, String RoomID) {
+        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM RoomBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
+        ArrayList<String> results2 = db.querySQL("SELECT RoomID FROM RoomBooking Where RoomID = '"+RoomID+"';","RoomID");
+        ArrayList<String> results3 = db.querySQL("SELECT CourseID FROM RoomBooking Where CourseID = '"+CourseID+"';","CourseID");
+        //System.out.println(results);
+        ArrayList<String> combinedResults = new ArrayList<String>();
+        combinedResults.addAll(results1);
+        combinedResults.addAll(results2);
+        combinedResults.addAll(results3);
+        return combinedResults.size()>0;
+        //return getTeacher().contains(s);
+    }
     int addRoomBooking(String CourseID, String TimeSlotID, String RoomID){
-
-        //ArrayList<String> RoomsBooked;
-        //db.querySQL("SELECT TimeSlotID FROM TimeSlot;","TimeSlotID");
-
         Random rand = new Random();
         int RoomBookingID = rand.nextInt(100);  //generates the IDs for all RoomBookings
         db.cmdSQL("INSERT INTO RoomBooking (RoomBookingID, CourseID, TimeSlotID, RoomID) VALUES ("+RoomBookingID+",'"+CourseID+"','"+TimeSlotID+"','"+RoomID+"');");
         return RoomBookingID;
     }
 
+
+    /*
+    boolean hasTeacher(String s){
+        ArrayList<String> lst= db.querySQL("select name from Teacher where name = '"+s+"';","name");
+        System.out.println(lst);
+        return lst.size()>0;
+        //return getTeacher().contains(s);
+    }
+     */
+
+
     //ArrayList<String> getRoomBooking(){
     //  return db.querySQL("select name from RoomBooking;","name");
     //}
 
 
-
     //---Teacher Booking functions---
-
-    void addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID){
+    boolean hasTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
+        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM TeacherBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
+        return results1.size()>0;
+    }
+    void addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
         Random rand = new Random();
         int TeacherBookingID = rand.nextInt(100);   //generates all the IDs for TeacherBooking
         db.cmdSQL("INSERT INTO TeacherBooking (TeacherBookingID, CourseID, TimeSlotID, TeacherID) VALUES ("+TeacherBookingID+",'"+CourseID+"','"+TimeSlotID+"',"+TeacherID+");");
@@ -205,8 +200,6 @@ public class BookingsModel {
     //ArrayList<String> getTeacherBooking(){
     //  return db.querySQL("select name from RoomBooking;","name");
     //}
-
-
 
     //---Common functions----
     //Don't know exactly what are they supposed to (?)
@@ -219,4 +212,16 @@ public class BookingsModel {
         return db.querySQL("SELECT fld2 FROM lst1 ORDER BY fld1;","fld2");
     }
 }
+
+//NOT BEING USED
+    /*
+    String findRoom(String c){
+        ArrayList<String> lst= db.querySQL(
+                "SELECT Room.Name FROM Room INNER JOIN Course"
+                        +" WHERE Course.Name = '"+c+"' and Room.Stud > Course.Stud;","name");
+        System.out.println(lst);
+        if(lst.size()==0)return "";
+        else return lst.get(0);
+    }
+     */
 
