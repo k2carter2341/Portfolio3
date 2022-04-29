@@ -35,6 +35,7 @@ public class Main extends Application {
     private BookingsModel model = new BookingsModel();
     private BookingsController controller = new BookingsController(model,this);
 
+//Dropdown boxes that have information/IDs from Tables
     ComboBox<String> comboBoxCourses = new ComboBox<>();
     Label labelSelectCourse = new Label("Select course");
     RadioButton radioButtonInfoCourse = new RadioButton("Get info from course");
@@ -48,8 +49,9 @@ public class Main extends Application {
     ComboBox<String> comboBoxTeachers = new ComboBox<>();
     Label labelSelectTeacher = new Label("Select teacher");
 
+    //The user can add another teacher
     Button buttonAddTeacher = new Button("Add teacher");
-    TextField textFieldAddTeacher = new TextField();
+    TextField textFieldAddTeacher = new TextField();    //The name of the Teacher that will be added
 
     //RadioButton radioButtonInfoTeacher = new RadioButton("Get info from teacher");
     //RadioButton radioButtonInfoRoom = new RadioButton("Get info from room");

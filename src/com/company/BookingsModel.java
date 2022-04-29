@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BookingsModel {
-    BookingsDB db = new BookingsDB();   //add in external libraries
+    //The database
+    BookingsDB db = new BookingsDB();
 
     //GET course capacity
 
@@ -83,7 +84,7 @@ public class BookingsModel {
     void addDefaultTeacher(int TeacherID ,String TeacherName) {
         db.cmdSQL("INSERT INTO Teacher (TeacherID, Name) VALUES ("+TeacherID+",'"+TeacherName+"');");
     }
-
+    //Adding new teachers to the Teacher table
     int addTeacher(String TeacherName){
         if (TeacherName != "") {
             Random rand = new Random();
@@ -95,7 +96,7 @@ public class BookingsModel {
             return -1;
         }
     }
-
+    //Gets information on the Teacher
     ArrayList<String> getTeacher(){
         return db.querySQL("SELECT TeacherID, Name FROM Teacher;","TeacherID");
     }
@@ -130,7 +131,7 @@ public class BookingsModel {
     void addRoom(String RoomID, int MaxCapacity){
         db.cmdSQL("INSERT INTO Room (RoomID, MaxCapacity) VALUES ('"+RoomID+"',"+MaxCapacity+");");
     }
-
+    //Gets information on rooms from Room table
     ArrayList<String> getRoom(){
         return db.querySQL("SELECT RoomID FROM Room;","RoomID");
     }
@@ -153,7 +154,7 @@ public class BookingsModel {
     void addCourse(String CourseID, int MaxCapacity) {
         db.cmdSQL("INSERT INTO Course (CourseID,Capacity) VALUES ('"+CourseID+"',"+MaxCapacity+");");
     }
-
+    //Gets information from Course table
     ArrayList<String> getCourse() {
         return db.querySQL("SELECT CourseID FROM Course;","CourseID");
     }
@@ -182,7 +183,7 @@ public class BookingsModel {
         //db.querySQL("SELECT TimeSlotID FROM TimeSlot;","TimeSlotID");
 
         Random rand = new Random();
-        int RoomBookingID = rand.nextInt(100);
+        int RoomBookingID = rand.nextInt(100);  //generates the IDs for all RoomBookings
         db.cmdSQL("INSERT INTO RoomBooking (RoomBookingID, CourseID, TimeSlotID, RoomID) VALUES ("+RoomBookingID+",'"+CourseID+"','"+TimeSlotID+"','"+RoomID+"');");
         return RoomBookingID;
     }
@@ -197,7 +198,7 @@ public class BookingsModel {
 
     void addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID){
         Random rand = new Random();
-        int TeacherBookingID = rand.nextInt(100);
+        int TeacherBookingID = rand.nextInt(100);   //generates all the IDs for TeacherBooking
         db.cmdSQL("INSERT INTO TeacherBooking (TeacherBookingID, CourseID, TimeSlotID, TeacherID) VALUES ("+TeacherBookingID+",'"+CourseID+"','"+TimeSlotID+"',"+TeacherID+");");
     }
 
@@ -209,6 +210,7 @@ public class BookingsModel {
 
     //---Common functions----
     //Don't know exactly what are they supposed to (?)
+    //I dont think we need this because we got rid of lst1
 
     void add(String s){
         db.cmdSQL("INSERT INTO lst1 (fld2) VALUES ('"+s+"');");

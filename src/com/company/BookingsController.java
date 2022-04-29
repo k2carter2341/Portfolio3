@@ -7,6 +7,7 @@ public class BookingsController {
 
         BookingsModel model;
         Main view;
+        //
         BookingsController(BookingsModel model, Main view){
             this.model = model; this.view = view;
         }
@@ -39,7 +40,7 @@ public class BookingsController {
                 }
             //}
         }
-
+        //Retrieves information from Course Table
         void getInfoFromCourse(String courseID) {
             if (view.radioButtonInfoCourse.isSelected()) {
                 ArrayList<String> result = model.getInfoFromCourse(courseID);
