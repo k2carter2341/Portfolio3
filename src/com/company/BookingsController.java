@@ -58,12 +58,12 @@ public class BookingsController {
         }
 
         void addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
-            if(model.hasTeacherBooking(CourseID, TimeSlotID, TeacherID)){
-                view.setTextAreaComboBoxInfo("Room Booking already exists! Please try again.");
-            } else {
+//            if(model.hasTeacherBooking(CourseID, TimeSlotID, TeacherID)){
+//                view.setTextAreaComboBoxInfo("Room Booking already exists! Please try again.");
+            //} else {
                 int teacherBookingID = model.addTeacherBooking(CourseID, TimeSlotID, TeacherID);
-                view.setTextAreaComboBoxInfo("Room is booked! The Room Booking ID is " + teacherBookingID + ".");
+                view.setTextAreaComboBoxInfo("Teacher is booked! The Teacher booking ID is " + teacherBookingID + ".");
             }
         }
 
-}
+//}

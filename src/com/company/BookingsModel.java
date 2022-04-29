@@ -1,6 +1,5 @@
 package com.company;
 
-import javax.lang.model.element.Name;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -151,16 +150,20 @@ public class BookingsModel {
 
 
     //---Room Booking functions---
+    //*****For this to work there needs to be an AND in between the parameters somehow*****
     boolean hasRoomBooking(String CourseID, String TimeSlotID, String RoomID) {
-        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM RoomBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
-        ArrayList<String> results2 = db.querySQL("SELECT RoomID FROM RoomBooking Where RoomID = '"+RoomID+"';","RoomID");
-        ArrayList<String> results3 = db.querySQL("SELECT CourseID FROM RoomBooking Where CourseID = '"+CourseID+"';","CourseID");
+//        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM RoomBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
+//        ArrayList<String> results2 = db.querySQL("SELECT RoomID FROM RoomBooking Where RoomID = '"+RoomID+"';","RoomID");
+//        ArrayList<String> results3 = db.querySQL("SELECT CourseID FROM RoomBooking Where CourseID = '"+CourseID+"';","CourseID");
+        // even with the same time slot you can book courses and rooms
+        ArrayList<String> results4 = db.querySQL("SELECT TimeSlotID, CourseID, RoomID FROM RoomBooking Where TimeSlotID = '"+TimeSlotID+"',  CourseID = '"+CourseID+"', RoomID = '"+RoomID+"';","TimeSlotID");
+        return results4.size()>0;
         //System.out.println(results);
-        ArrayList<String> combinedResults = new ArrayList<String>();
-        combinedResults.addAll(results1);
-        combinedResults.addAll(results2);
-        combinedResults.addAll(results3);
-        return combinedResults.size()>0;
+//        ArrayList<String> combinedResults = new ArrayList<String>();
+//        combinedResults.addAll(results1);
+//        combinedResults.addAll(results2);
+//        combinedResults.addAll(results3);
+//        return combinedResults.size()>0;
         //return getTeacher().contains(s);
     }
     int addRoomBooking(String CourseID, String TimeSlotID, String RoomID){
@@ -187,14 +190,23 @@ public class BookingsModel {
 
 
     //---Teacher Booking functions---
-    boolean hasTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
-        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM TeacherBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
-        return results1.size()>0;
-    }
-    void addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
+
+    //*****For this to work there needs to be an AND in between these parameters*****
+//    boolean hasTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
+//        ArrayList<String> results1 = db.querySQL("SELECT TimeSlotID FROM TeacherBooking Where TimeSlotID = '"+TimeSlotID+"';","TimeSlotID");
+//        ArrayList<String> results2 = db.querySQL("SELECT CourseID FROM TeacherBooking Where CourseID = '"+CourseID+"';","CourseID");
+//        ArrayList<String> results3 = db.querySQL("SELECT TeacherID FROM TeacherBooking Where TeacherID = "+TeacherID+";","TeacherID");
+//
+//        return results1.size()>0;
+//        //return results2.size()>0;
+//        //return results3.size()>0;
+
+   // }
+    int addTeacherBooking(String CourseID, String TimeSlotID, int TeacherID) {
         Random rand = new Random();
         int TeacherBookingID = rand.nextInt(100);   //generates all the IDs for TeacherBooking
         db.cmdSQL("INSERT INTO TeacherBooking (TeacherBookingID, CourseID, TimeSlotID, TeacherID) VALUES ("+TeacherBookingID+",'"+CourseID+"','"+TimeSlotID+"',"+TeacherID+");");
+        return TeacherBookingID;
     }
 
     //ArrayList<String> getTeacherBooking(){
@@ -203,7 +215,9 @@ public class BookingsModel {
 
     //---Common functions----
     //Don't know exactly what are they supposed to (?)
-    //I dont think we need this because we got rid of lst1
+
+//These functions are connected to the controller for getting and adding info, so it cannot be taken out.
+    //my question is: are we creating a lst database? Like where is this stuff being inserted to?n
 
     void add(String s){
         db.cmdSQL("INSERT INTO lst1 (fld2) VALUES ('"+s+"');");
